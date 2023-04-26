@@ -12,11 +12,23 @@ class Clock {
         this.printTime();
 
       // 4. Schedule the tick at 1 second intervals.
-        setInterval(() => {
-          this._tick();
-        }, 1000);
+        // // This works:
+        // setInterval(() => {
+        //   this._tick();
+        // }, 1000);
+
+        // // Does not work:
+        // setInterval(
+        //   _tick()
+        // , 1000);
         
+        // setInterval(this._tick, 1000); // This does not work. if we did not use fat arrow
+        setInterval(this._tick.bind(this), 1000); // This works. if we did not use fat arrow
     };
+
+    // setInterval(_tick){
+    //   _tick();
+    // }
   
     printTime() {
       // Format the time in HH:MM:SS
@@ -27,6 +39,7 @@ class Clock {
   
     _tick() {
       // 1. Increment the time by one second.
+      
       if(this.seconds < 59) {
         this.seconds += 1;
       } else { 
@@ -47,3 +60,15 @@ class Clock {
   }
   
   const clock = new Clock();
+
+  // setInterval(clock._tick.bind(clock), 1000); // This works.
+  // setInterval(clock._tick, 1000); // Why does this have error if we do not .bind(clock)
+
+  // theoretical:
+  // setInterval(callback){
+  //   // callback();
+  //   _tick(){
+  //     this.minutes + 1;
+  //     this.printTime();
+  //   }
+  // }
